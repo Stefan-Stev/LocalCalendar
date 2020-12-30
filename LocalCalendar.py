@@ -1,29 +1,63 @@
-from icalendar import Calendar, Event, Alarm
+from icalendar import Calendar
 from datetime import datetime, timezone, timedelta
 from pytz import UTC # timezone
 import time
-
+import threading
+import icstojsonFile
+lock = threading.Lock()
 def get_sec(seconds_after,minutes_after,hours_after):
 
     seconds=3600*int(hours_after)+60*int(minutes_after)+int(seconds_after)
     return seconds
-def repeatafter(ora_trigger,seconds_after,minutes_after,hours_after,number_of_reps):
-        for i in range(0,int(number_of_reps)):
-           seconds=get_sec(seconds_after,minutes_after,hours_after)
-           time.sleep(seconds)
-           print("Summary: ", component.get('summary'))
-           print("Start Date ", component.get('dtstart').dt)
-           print("End date ", component.get('dtend'))
-           print("ceva ", component.get('dtstamp'))
 
 
+
+
+def display_action(lock,component,f):
+    number_of_reps=int(component.subcomponents[0]['NUMBEROFREPS'])
+    seconds=get_sec(component.subcomponents[0]['REPEATAFTERINSECONDS'],component.subcomponents[0]['REPEATAFTERINMINUTES'],component.subcomponents[0]['REPEATAFTERINHOURS'])
+    for i in range(0,number_of_reps):
+        lock.acquire()
+        print("as",component.subcomponents[0]['ACTION'])
+        if component.subcomponents[0]['ACTION']=='CONSOLE':
+
+            print('-----------')
+            print("Summary: ", component.get('summary'))
+            print("Start Date ", component.get('dtstart').dt)
+            print("End date ", component.get('dtend').dt)
+            print("ceva ", component.get('dtstamp').dt)
+            print('-----------')
+            lock.release()
+            time.sleep(seconds)
+        elif component.subcomponents[0]['ACTION']=='FILE':
+            f.write('-----------')
+            f.write('\n')
+            f.write("Summary: "+ component.get('summary'))
+            f.write('\n')
+            f.write("Start Date: "+ str(component.get('dtstart').dt))
+            f.write('\n')
+            f.write("End date: "+ str(component.get('dtend').dt))
+            f.write('\n')
+            f.write("DTSTAMPT: "+ str(component.get('dtstamp').dt))
+            f.write('\n')
+            f.write('-----------')
+            f.write('\n')
+            lock.release()
+            time.sleep(seconds)
 
 if __name__ == '__main__':
+        f=open("text_display.txt","w")
         g = open('example.ics','rb')
+        icstojsonFile.export_from_ics_to_json()
+        # gcal2=Calendar.from_ical(g.read())
+        # for component in gcal2.walk():
 
         gcal = Calendar.from_ical(g.read())
-        print(gcal)
-        global x
+        ### sortam evenimentele in functie de prioritatea lor
+        lista=gcal.subcomponents
+        lista.sort(key=lambda x: x.get('PRIORITY'))
+        ##
+
         for component in gcal.walk():
             if component.name == "VEVENT":
                 before_seconds=component.subcomponents[0]['BEFORESECONDS']
@@ -41,12 +75,10 @@ if __name__ == '__main__':
                 now=datetime.now(timezone.utc)
                 diferenta=now-ora_trigger
                 if now>ora_trigger:
-                        print("Summary: ",component.get('summary'))
-                        print("Start Date " ,component.get('dtstart').dt)
-                        print("End date ",component.get('dtend'))
-                        print("ceva ",component.get('dtstamp'))
-                        print(component.subcomponents[0]['ACTION'])
-                        repeatafter(ora_trigger,component.subcomponents[0]['REPEATAFTERINSECONDS'],component.subcomponents[0]['REPEATAFTERINMINUTES'],component.subcomponents[0]['REPEATAFTERINHOURS'],component.subcomponents[0]['NUMBEROFREPS'])
+                        t=threading.Thread(target=display_action,args=(lock,component,f))
+                        t.start()
+
+
 
         g.close()
 
