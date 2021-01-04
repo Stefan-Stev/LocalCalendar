@@ -1,0 +1,30 @@
+<STARTEVENT>
+SUMMARY: Coding with my Russian friend
+dtstart: 2020-12-31 08:00:00+00:00
+dtend: 2020-04-05 10:00:00+00:00
+priority: 2
+<ENDEVENT>
+<STARTEVENT>
+SUMMARY: Python meeting about calendaring
+dtstart: 2020-04-04 08:00:00+00:00
+dtend: 2020-04-05 10:00:00+00:00
+priority: 2
+<ENDEVENT>
+<STARTEVENT>
+SUMMARY: Meeting with president
+dtstart: 2020-04-04 08:00:00+00:00
+dtend: 2020-04-05 10:00:00+00:00
+priority: 1
+<ENDEVENT>
+<STARTEVENT>
+SUMMARY: Meeting with teacher
+dtstart: 2020-04-04 08:00:00+00:00
+dtend: 2020-04-05 10:00:00+00:00
+priority: 1
+<ENDEVENT>
+<STARTEVENT>
+SUMMARY: Visiting Norway
+dtstart: 2021-04-04 08:00:00+00:00
+dtend: 2021-04-05 10:00:00+00:00
+priority: 4
+<ENDEVENT>

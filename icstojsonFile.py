@@ -9,5 +9,7 @@ def export_from_ics_to_json():
     f.write(result)
     f.close()
     print("Am scris in fisierul json")
-export_from_ics_to_json()
 
+
+
+####https://www.vipinajayakumar.com/parsing-text-with-python/
