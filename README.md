@@ -21,7 +21,7 @@ Programul icstoJsonFile.py  doar memoreaza evenimentele sub forma de format json
 ### Bibliografie
 
 
-(https://www.vipinajayakumar.com/parsing-text-with-python/)
-(https://stackoverflow.com/questions/3408097/parsing-files-ics-icalendar-using-python)
-(https://pypi.org/project/icalendar/)
+(https://www.vipinajayakumar.com/parsing-text-with-python/) <br/>
+(https://stackoverflow.com/questions/3408097/parsing-files-ics-icalendar-using-python)  <br/>
+(https://pypi.org/project/icalendar/) <br/>
 (https://github.com/CalyFactory/python-jicson)
