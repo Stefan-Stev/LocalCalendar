@@ -1,3 +1,5 @@
+import sys
+
 from icalendar import Calendar,Event,Alarm
 from datetime import datetime, timezone, timedelta
 
@@ -145,8 +147,19 @@ def adaugare_eveniment():
     fd.write(data.__str__())
 
 if __name__ == '__main__':
-        f=open("text_display.txt","w")
-        g = open('example.ics','rb')
+
+        try:
+            f=open("text_display.txt","w")
+        except OSError:
+            print("Eroare la deschiderea fisierului text_display.txt")
+            sys.exit()
+
+        try:
+            g = open('example.ics','rb')
+        except OSError:
+            print("Eroare la deschiderea fisieului example.ics")
+            sys.exit()
+
         icstojsonFile.export_from_ics_to_json()
         ###daca utilizatorul vrea sa adauge evenimente noi in calendar
         raspuns = input("Vrei sa adaugi un eveniment nou?\n")
@@ -182,7 +195,12 @@ if __name__ == '__main__':
                         t.start()
 
         time.sleep(20)
-        f.close()
+
+        try:
+            f.close()
+        except OSError:
+            print("Eroare la inchiderea fisieului")
+            sys.exit()
         raspuns=input('Apasa orice tasta pentru a continua')
         lock2 = threading.Lock()
         f2=open('text_display2.txt','w')
@@ -205,6 +223,10 @@ if __name__ == '__main__':
                     t = threading.Thread(target=display_action2, args=(lock2, eveniment, f2))
                     t.start()
 
-        g.close()
+        try:
+            g.close()
+        except OSError:
+            print("Eroare la inchiderea fisieului")
+            sys.exit()
 
 
